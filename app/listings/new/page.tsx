@@ -28,6 +28,7 @@ export default function NewListingPage() {
   const [aiVerificationStatus, setAiVerificationStatus] = useState<"idle" | "verifying" | "passed" | "failed">("idle")
   const [aiVerificationMessage, setAiVerificationMessage] = useState("")
   const [aiVerificationDetails, setAiVerificationDetails] = useState<string[]>([])
+  const [currentTab, setCurrentTab] = useState("details")
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -147,7 +148,7 @@ export default function NewListingPage() {
             </AlertDescription>
           </Alert>
 
-          <Tabs defaultValue="details" className="mb-8">
+          <Tabs value={currentTab} onValueChange={setCurrentTab} className="mb-8">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="details">Details</TabsTrigger>
               <TabsTrigger value="media">Media</TabsTrigger>
@@ -274,7 +275,7 @@ export default function NewListingPage() {
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button variant="outline">Save Draft</Button>
-                  <Button>Continue to Media</Button>
+                  <Button onClick={() => setCurrentTab("media")}>Continue to Media</Button>
                 </CardFooter>
               </Card>
             </TabsContent>
@@ -340,8 +341,10 @@ export default function NewListingPage() {
                   </Alert>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button variant="outline">Previous</Button>
-                  <Button>Continue to Features</Button>
+                  <Button variant="outline" onClick={() => setCurrentTab("details")}>
+                    Previous
+                  </Button>
+                  <Button onClick={() => setCurrentTab("features")}>Continue to Features</Button>
                 </CardFooter>
               </Card>
             </TabsContent>
@@ -454,8 +457,10 @@ export default function NewListingPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button variant="outline">Previous</Button>
-                  <Button>Continue to Verification</Button>
+                  <Button variant="outline" onClick={() => setCurrentTab("media")}>
+                    Previous
+                  </Button>
+                  <Button onClick={() => setCurrentTab("verify")}>Continue to Verification</Button>
                 </CardFooter>
               </Card>
             </TabsContent>
@@ -537,7 +542,9 @@ export default function NewListingPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button variant="outline">Previous</Button>
+                  <Button variant="outline" onClick={() => setCurrentTab("features")}>
+                    Previous
+                  </Button>
                   <Button disabled={aiVerificationStatus !== "passed"}>
                     {aiVerificationStatus === "passed" ? "Submit Listing" : "Complete Verification First"}
                   </Button>

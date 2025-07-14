@@ -761,10 +761,3 @@ export {
   SidebarTrigger,
   useSidebar,
 }
-
-// Prevent infinite update loop on isMobile ↔ openMobile
-React.useEffect(() => {
-  if (typeof isMobile === "boolean") {
-    setOpenMobile((prev) => prev !== isMobile ? isMobile : prev);
-  }
-}, [isMobile]);

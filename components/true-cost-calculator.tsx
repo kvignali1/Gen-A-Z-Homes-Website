@@ -23,21 +23,20 @@ export function TrueCostCalculator() {
   const [monthlyPayment, setMonthlyPayment] = useState(0)
   const [dataLoaded, setDataLoaded] = useState(false)
 
-  // Sync down-payment % when the $ amount changes
-  useEffect(() => {
-    const percent = Math.round((downPayment / homePrice) * 100)
-    if (percent !== downPaymentPercent) {
-      setDownPaymentPercent(percent)
-    }
-  }, [downPayment, homePrice, downPaymentPercent])
+  // Remove both useEffect hooks and replace with direct handlers
+  const handleHomePriceChange = (newPrice: number) => {
+    setHomePrice(newPrice)
+    // Recalculate down payment amount based on current percentage
+    const newDownPayment = Math.round((downPaymentPercent / 100) * newPrice)
+    setDownPayment(newDownPayment)
+  }
 
-  // Sync down-payment $ amount when the % changes
-  useEffect(() => {
-    const amount = Math.round((downPaymentPercent / 100) * homePrice)
-    if (amount !== downPayment) {
-      setDownPayment(amount)
-    }
-  }, [downPaymentPercent, homePrice, downPayment])
+  const handleDownPaymentPercentChange = (newPercent: number) => {
+    setDownPaymentPercent(newPercent)
+    // Recalculate down payment amount
+    const newDownPayment = Math.round((newPercent / 100) * homePrice)
+    setDownPayment(newDownPayment)
+  }
 
   // Simulate fetching regional data when zip code changes
   useEffect(() => {
@@ -111,19 +110,19 @@ export function TrueCostCalculator() {
             max={2000000}
             step={10000}
             value={[homePrice]}
-            onValueChange={(value) => setHomePrice(value[0])}
+            onValueChange={(value) => handleHomePriceChange(value[0])}
           />
           <div className="flex gap-2 mt-1">
-            <Button variant="outline" size="sm" onClick={() => setHomePrice(300000)}>
+            <Button variant="outline" size="sm" onClick={() => handleHomePriceChange(300000)}>
               $300k
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setHomePrice(500000)}>
+            <Button variant="outline" size="sm" onClick={() => handleHomePriceChange(500000)}>
               $500k
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setHomePrice(750000)}>
+            <Button variant="outline" size="sm" onClick={() => handleHomePriceChange(750000)}>
               $750k
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setHomePrice(1000000)}>
+            <Button variant="outline" size="sm" onClick={() => handleHomePriceChange(1000000)}>
               $1M
             </Button>
           </div>
@@ -142,16 +141,16 @@ export function TrueCostCalculator() {
             max={50}
             step={1}
             value={[downPaymentPercent]}
-            onValueChange={(value) => setDownPaymentPercent(value[0])}
+            onValueChange={(value) => handleDownPaymentPercentChange(value[0])}
           />
           <div className="flex gap-2 mt-1">
-            <Button variant="outline" size="sm" onClick={() => setDownPaymentPercent(3.5)}>
+            <Button variant="outline" size="sm" onClick={() => handleDownPaymentPercentChange(3.5)}>
               3.5%
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setDownPaymentPercent(10)}>
+            <Button variant="outline" size="sm" onClick={() => handleDownPaymentPercentChange(10)}>
               10%
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setDownPaymentPercent(20)}>
+            <Button variant="outline" size="sm" onClick={() => handleDownPaymentPercentChange(20)}>
               20%
             </Button>
           </div>
