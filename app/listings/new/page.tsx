@@ -90,6 +90,16 @@ export default function NewListingPage() {
     }, 2000)
   }
 
+  const handleSubmitListing = () => {
+    // This would be an actual API call in a real app
+    alert("Listing submitted successfully! You will be redirected to your dashboard.")
+    // In a real app, you would:
+    // 1. Send the form data to your API
+    // 2. Show a success message
+    // 3. Redirect to the listings page or user dashboard
+    // Example: router.push('/dashboard')
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
@@ -545,7 +555,7 @@ export default function NewListingPage() {
                   <Button variant="outline" onClick={() => setCurrentTab("features")}>
                     Previous
                   </Button>
-                  <Button disabled={aiVerificationStatus !== "passed"}>
+                  <Button disabled={aiVerificationStatus !== "passed"} onClick={handleSubmitListing}>
                     {aiVerificationStatus === "passed" ? "Submit Listing" : "Complete Verification First"}
                   </Button>
                 </CardFooter>
